@@ -1,0 +1,2 @@
+int  <interface-name>
+spanning-tree bpdufilter enable
