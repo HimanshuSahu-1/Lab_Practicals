@@ -1,0 +1,43 @@
+ !! Dhcp Server  Router 
+
+int g0/0 
+ip add  192.168.10.100 255.255.255.0 
+no sh 
+
+!!  DhCP  pool fdrom the  server  router 
+ip  dhcp excluded  10.1.1.1 10.1.1.20
+
+
+
+!!  Create  DHCP Pool 
+ip  dhcp Client_Pool 
+network  10.1.1.0 255.255.255.0 
+default-router 10.1.1.1
+dns-server 8.8.8.8
+exit
+  
+  
+ip  route 10.1.1.0 255.255.255.0 192.168.10.1
+exit 
+
+
+!! DHCP Relay Router 
+
+1️⃣ Client-Side Interface (Toward Switch/PC)
+interface g0/0
+ ip address 10.1.1.1 255.255.255.0
+ no shutdown
+exit
+
+
+2️⃣ Server-Side Interface (Toward DHCP Server)
+interface g0/1
+ ip address 192.168.10.1 255.255.255.0
+ no shutdown
+exit
+
+Add Helper Address
+interface g0/0
+ ip helper-address 192.168.10.100
+exit
+  
